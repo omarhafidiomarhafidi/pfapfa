@@ -1,13 +1,18 @@
 import pandas as pd
-
 import matplotlib.pyplot as plt
-
 from prophet import Prophet
+import pandas as pd
+import re
+from collections import defaultdict
+from itertools import combinations
+from Levenshtein import distance as levenshtein_distance
+
+filepath = 'tweets_large_data.csv'
 
 
 def main(hashtag):
     # Load the dataset
-    df = pd.read_csv('tweets_large_data.csv')
+    df = pd.read_csv(filepath)
 
     # Parse the timestamp column to datetime
     df['timestamp'] = pd.to_datetime(df['timestamp'])
@@ -74,10 +79,31 @@ def main(hashtag):
     results, forecast_likes, forecast_retweets = analyze_and_predict_hashtag(df, hashtag_to_analyze)
 
     if results is not None:
-        # Display the actual and predicted results
         print("Actual data:")
         print(results)
         print("\nPredicted Likes:")
         print(forecast_likes[['ds', 'yhat']].tail(10))
         print("\nPredicted Retweets:")
         print(forecast_retweets[['ds', 'yhat']].tail(10))
+
+
+topics = [
+    ("Sports", ["#Sports", "#GameDay", "#Victory", "#TeamSpirit"]),
+    ("Technology", ["#Tech", "#Innovation", "#Gadgets", "#AI"]),
+    ("Politics", ["#Politics", "#Government", "#News", "#Elections"]),
+    ("Fitness", ["#Fitness", "#Workout", "#Healthy", "#Wellness"]),
+    ("Cooking", ["#Cooking", "#Pasta", "#Foodie", "#Recipe"]),
+    ("Nature", ["#Nature", "#Sunset", "#Relax", "#Outdoors"]),
+    ("Music", ["#Music", "#NewRelease", "#Bands", "#Concert"]),
+    ("Finance", ["#Finance", "#Economy", "#Markets", "#Investing"]),
+    ("Travel", ["#Travel", "#Adventure", "#Wanderlust", "#Explore"]),
+    ("Education", ["#Education", "#Learning", "#Books", "#Knowledge"])
+]
+
+
+def similairHash(hash):
+    res = []
+    for key, value in topics:
+        if key.__eq__(hash) or value.__contains__("#" + hash):
+            res = value
+    return res

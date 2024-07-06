@@ -40,8 +40,16 @@
                     </form>
                     <h4 id="resultText" style="margin-bottom: -20px;"></h4>
                 </div>
-                <img src="{{ url_for('static', filename='images/myFig.jpg') }} alt="graph for tendance">
+                <img id="image" src="{{ url_for('static', filename='images/myFig.jpg') }}  alt="graph for tendance">
             </div>
+            <main role="main" style="margin-left: 3.5em;">
+
+                <header><h1>Tags</h1></header>
+                <div id="hash">
+
+                </div>
+            </main>
+
         </div>
     </body>
     </html>
