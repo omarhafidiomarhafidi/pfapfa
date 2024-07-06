@@ -1,6 +1,6 @@
 import joblib
 from flask import Flask, render_template, request, jsonify
-
+from trends import mainF
 app = Flask(__name__)
 target_names = ["sadness", "joy", "love", "anger", "fear", "surprise"]
 
@@ -32,6 +32,7 @@ def predict():
 
 @app.route('/trends', methods=['GET'])
 def trends():
+    mainF()
     return render_template('trends.html')
 @app.route('/trends', methods=['POST'])
 def trendsp():
