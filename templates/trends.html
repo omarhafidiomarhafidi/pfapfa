@@ -17,10 +17,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Analyse de tweet</a>
+                        <a class="nav-link" href="/">Analyse de tweet</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Analyse des tendances</a>
+                        <a class="nav-link" href="/trends">Analyse des tendances</a>
                     </li>
                 </ul>
             </div>
@@ -33,7 +33,7 @@
                     <form action="/trends" method="post">
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-arrow-trend-up"></i></span>
-                            <input type="text" id="text" class="form-control" placeholder="Search for a hashtag" aria-label="Tweet" aria-describedby="basic-addon1">
+                            <input name="text" type="text" id="text" class="form-control" placeholder="Search for a hashtag" aria-label="Tweet" aria-describedby="basic-addon1">
                         </div>
                         <button type="submit"  class="btn btn-primary">Tendance</button>
                         
@@ -41,7 +41,7 @@
                     <h4 id="resultText" style="margin-bottom: -20px;"></h4>
                 </div>
                 {% if isSecond  %}
-                <img  id="image"  src="/static/images/hashtag_likes_retweets.png"  alt="graph for tendance">
+                <img  id="image"  src="/static/ayy.png"  alt="graph for tendance">
                 {% endif %}
             </div>
 

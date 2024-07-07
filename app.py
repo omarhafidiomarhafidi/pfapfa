@@ -1,5 +1,5 @@
 import joblib
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, make_response, send_from_directory
 from trends import mainF
 from trendForhash import main
 
@@ -10,6 +10,15 @@ clf = joblib.load('emotion_classifier.joblib')
 
 # Load the saved vectorizer if needed
 vectorizer = joblib.load('tfidf_vectorizer.joblib')
+
+@app.after_request
+def add_header(response):
+    response.cache_control.no_cache = True
+    response.cache_control.no_store = True
+    response.cache_control.must_revalidate = True
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 # Function to preprocess and predict a single tweet
 def analyse_tweet(tweet):
@@ -36,14 +45,23 @@ def predict():
 def trends():
 
     return render_template('trends.html')
+
+@app.route('/static/images/<path:filename>')
+def custom_static(filename):
+    response = make_response(send_from_directory('static/images', filename))
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
+
 @app.route('/trends', methods=['POST'])
 def trendsp():
-    data = request.form
-    text = data.get('text', '')
+    text = request.form['text']
+    print("printing text : "+text)
     main(text)
     return render_template("trends.html",isSecond=True)
 
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

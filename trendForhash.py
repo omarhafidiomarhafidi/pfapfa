@@ -1,13 +1,10 @@
 from pathlib import Path
-
 import pandas as pd
 import matplotlib.pyplot as plt
 from prophet import Prophet
-import pandas as pd
 import os
 
 filepath = 'tweets_large_data.csv'
-
 
 def main(hashtagA):
     # Load the dataset
@@ -60,19 +57,24 @@ def main(hashtagA):
         plt.plot(df_hashtag_grouped['date'], df_hashtag_grouped['total_likes'], marker='o', label='Actual Likes')
         plt.plot(df_hashtag_grouped['date'], df_hashtag_grouped['total_retweets'], marker='x', label='Actual Retweets')
         plt.plot(forecast_likes['ds'], forecast_likes['yhat'], linestyle='--', label='Predicted Likes')
+        plt.plot(forecast_retweets['ds'], forecast_retweets['yhat'], linestyle='--', label='Predicted Retweets')
 
-        fig = plt.plot(forecast_retweets['ds'], forecast_retweets['yhat'], linestyle='--', label='Predicted Retweets')
-        print(hashtag)
         plt.title(f'Number of Likes and Retweets for Hashtag: {hashtagA}')
         plt.xlabel('Date')
         plt.ylabel('Count')
         plt.legend()
         plt.grid(True)
-        my_file = Path("static/images/hashtag_likes_retweets.png")
-        if my_file.exists():
-            os.remove("static/images/hashtag_likes_retweets.png")
-        plt.savefig('static/images/hashtag_likes_retweets.png')
-        plt.show()
+
+        # Ensure the directory exists
+        os.makedirs('static', exist_ok=True)
+        # File path
+        file_path = 'static/ayy.png'
+        # Remove the file if it exists
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        # Save the new plot
+        plt.savefig(file_path)
+        plt.close()
 
         return df_hashtag_grouped, forecast_likes, forecast_retweets
 
@@ -83,12 +85,16 @@ def main(hashtagA):
     results, forecast_likes, forecast_retweets = analyze_and_predict_hashtag(df, hashtag_to_analyze)
 
     if results is not None:
+        print("printing  : "+hashtag_to_analyze)
         print("Actual data:")
         print(results)
         print("\nPredicted Likes:")
         print(forecast_likes[['ds', 'yhat']].tail(10))
         print("\nPredicted Retweets:")
         print(forecast_retweets[['ds', 'yhat']].tail(10))
+
+
+
 
 
 

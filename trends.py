@@ -66,5 +66,4 @@ def mainF():
     # Plot the forecast for retweet_count
     fig_retweet = model_retweet.plot(forecast_retweet)
     plt.show()
-
     fig_retweet.savefig('static/myFig.jpg')
